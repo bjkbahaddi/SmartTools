@@ -1,261 +1,1514 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartTools.ai | المنصة العربية الرائدة للذكاء الاصطناعي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4f46e5; --primary-dark: #3730a3; --secondary: #0f172a;
-            --accent: #fbbf24; --bg: #ffffff; --text: #1e293b; --light-gray: #f8fafc;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartTools.ai | منصة الذكاء الاصطناعي العربية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0a12;
+  --ink2: #1a1a2e;
+  --cream: #faf9f6;
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --violet: #6c63ff;
+  --violet-dark: #4c44c9;
+  --muted: #6b7280;
+  --border: rgba(201,168,76,0.2);
+  --glass: rgba(255,255,255,0.04);
+  --glow: 0 0 40px rgba(108,99,255,0.15);
+}
 
-        * { box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: 'Tajawal', sans-serif; margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-        /* Navigation */
-        header {
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-            padding: 15px 8%; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 2000; border-bottom: 1px solid #e2e8f0;
-        }
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
-        .nav-menu { display: flex; gap: 30px; align-items: center; }
-        .nav-menu a { text-decoration: none; color: var(--secondary); font-weight: 500; transition: 0.3s; }
-        .nav-menu a:hover { color: var(--primary); }
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--ink);
+  color: var(--cream);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
 
-        /* Hero Section */
-        .hero {
-            padding: 100px 8% 150px; text-align: center;
-            background: radial-gradient(circle at top right, #e0e7ff, transparent), 
-                        radial-gradient(circle at bottom left, #fef3c7, transparent);
-        }
-        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.2; color: var(--secondary); }
-        .hero p { font-size: 1.25rem; color: #475569; max-width: 700px; margin: 0 auto 40px; }
+/* ─── Noise Overlay ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
 
-        /* Common Components */
-        .btn {
-            padding: 14px 32px; border-radius: 12px; font-weight: 700; cursor: pointer;
-            border: none; transition: 0.3s; font-family: inherit; font-size: 1rem;
-        }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4); }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ink2); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
 
-        /* Stats Section */
-        .stats { display: flex; justify-content: center; gap: 60px; padding: 50px 8%; background: var(--secondary); color: white; flex-wrap: wrap; }
-        .stat-item h3 { font-size: 2.5rem; margin: 0; color: var(--accent); }
+/* ─── Header ─── */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6%;
+  height: 70px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(10,10,18,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
 
-        /* Features/Services */
-        section { padding: 100px 8%; }
-        .section-title { text-align: center; margin-bottom: 60px; }
-        .section-title h2 { font-size: 2.5rem; color: var(--secondary); }
+.logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .card {
-            background: white; padding: 40px; border-radius: 24px; border: 1px solid #e2e8f0;
-            transition: 0.3s; text-align: right; position: relative; overflow: hidden;
-        }
-        .card:hover { border-color: var(--primary); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
-        .card .icon { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+nav { display: flex; align-items: center; gap: 32px; }
+nav a {
+  text-decoration: none;
+  color: rgba(250,249,246,0.6);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+nav a:hover { color: var(--gold); }
 
-        /* Pricing */
-        .pricing-card { border: 2px solid #e2e8f0; padding: 40px; border-radius: 24px; text-align: center; }
-        .pricing-card.popular { border-color: var(--primary); background: #f5f3ff; transform: scale(1.05); }
+.btn-nav {
+  padding: 9px 24px;
+  background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(108,99,255,0.3);
+}
+.btn-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,99,255,0.5); }
 
-        /* FAQ */
-        .faq-item { background: var(--light-gray); padding: 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
+/* ─── Hero ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 6% 80px;
+  position: relative;
+  overflow: hidden;
+}
 
-        /* Footer */
-        footer { background: var(--secondary); color: #94a3b8; padding: 80px 8% 40px; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 60px; }
-        .footer-grid h4 { color: white; margin-bottom: 20px; }
-        .footer-grid a { display: block; color: #94a3b8; text-decoration: none; margin-bottom: 10px; transition: 0.3s; }
-        .footer-grid a:hover { color: white; }
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(108,99,255,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,168,76,0.1) 0%, transparent 50%);
+}
 
-        /* Dashboard View Override */
-        #dashboard-view { position: fixed; inset: 0; background: white; z-index: 3000; display: none; flex-direction: row; }
-        .sidebar { width: 280px; background: var(--secondary); color: white; padding: 30px; }
-        .sidebar-nav { margin-top: 40px; }
-        .sidebar-nav div { padding: 15px; margin-bottom: 10px; border-radius: 10px; cursor: pointer; transition: 0.3s; }
-        .sidebar-nav div:hover { background: rgba(255,255,255,0.1); }
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; background: var(--light-gray); }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  color: var(--gold);
+  margin-bottom: 32px;
+  animation: fadeSlideDown 0.8s ease both;
+}
 
-        .hidden { display: none; }
-    </style>
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  animation: fadeSlideDown 0.8s 0.1s ease both;
+}
+
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  max-width: 600px;
+  color: rgba(250,249,246,0.55);
+  font-size: 1.15rem;
+  margin-bottom: 48px;
+  animation: fadeSlideDown 0.8s 0.2s ease both;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  animation: fadeSlideDown 0.8s 0.3s ease both;
+}
+
+.btn-primary {
+  padding: 14px 36px;
+  background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 30px rgba(108,99,255,0.35);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(108,99,255,0.5); }
+
+.btn-ghost {
+  padding: 14px 36px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--cream);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Floating shapes */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: pulse 8s ease-in-out infinite alternate;
+}
+.orb-1 { width: 400px; height: 400px; background: rgba(108,99,255,0.12); top: 10%; right: -5%; }
+.orb-2 { width: 300px; height: 300px; background: rgba(201,168,76,0.08); bottom: 10%; left: -5%; animation-delay: -4s; }
+
+/* ─── Stats Bar ─── */
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.stat {
+  flex: 1;
+  text-align: center;
+  padding: 32px 20px;
+  border-left: 1px solid var(--border);
+  max-width: 250px;
+}
+.stat:first-child { border-left: none; }
+.stat strong {
+  display: block;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: -1px;
+}
+.stat span { font-size: 0.85rem; color: rgba(250,249,246,0.5); }
+
+/* ─── Section ─── */
+section { padding: 100px 6%; }
+.section-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.section-sub { color: rgba(250,249,246,0.5); max-width: 500px; }
+
+/* ─── Tools Grid ─── */
+#services { padding: 100px 6%; }
+.tools-header { text-align: center; margin-bottom: 60px; }
+.tools-header .section-sub { margin: 0 auto; }
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.tool-card {
+  background: var(--ink2);
+  padding: 40px 36px;
+  cursor: pointer;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.tool-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(108,99,255,0.08), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.tool-card:hover::before { opacity: 1; }
+.tool-card:hover { background: #1e1e30; transform: scale(1.01); z-index: 1; }
+
+.tool-icon {
+  width: 52px; height: 52px;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+.tool-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+.tool-card p { font-size: 0.88rem; color: rgba(250,249,246,0.5); line-height: 1.7; }
+.tool-arrow {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: var(--violet);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.3s;
+}
+.tool-card:hover .tool-arrow { opacity: 1; transform: translateX(0); }
+
+/* ─── AI Chat CTA ─── */
+.ai-cta-section {
+  padding: 80px 6%;
+  text-align: center;
+  position: relative;
+}
+.ai-cta-box {
+  max-width: 700px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(108,99,255,0.1), rgba(201,168,76,0.05));
+  border: 1px solid rgba(108,99,255,0.3);
+  border-radius: 24px;
+  padding: 60px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.ai-cta-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(108,99,255,0.15), transparent 70%);
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+/* ─── Pricing ─── */
+#pricing { background: rgba(255,255,255,0.01); }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 60px auto 0;
+}
+.plan {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px 30px;
+  transition: all 0.4s;
+}
+.plan.highlight {
+  background: rgba(108,99,255,0.08);
+  border-color: rgba(108,99,255,0.5);
+  transform: translateY(-8px);
+}
+.plan-badge {
+  background: var(--violet);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 100px;
+  display: inline-block;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.plan h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: rgba(250,249,246,0.8); }
+.plan-price {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--cream);
+  letter-spacing: -2px;
+  margin: 16px 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+.plan-price sub { font-size: 1rem; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
+.plan-features { list-style: none; margin: 20px 0 28px; }
+.plan-features li {
+  padding: 8px 0;
+  font-size: 0.88rem;
+  color: rgba(250,249,246,0.6);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.plan-features li::before { content: '✦'; color: var(--gold); font-size: 0.6rem; }
+.plan-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--cream);
+  transition: all 0.3s;
+}
+.plan.highlight .plan-btn {
+  background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+  border-color: transparent;
+  box-shadow: 0 8px 24px rgba(108,99,255,0.3);
+}
+.plan-btn:hover { border-color: var(--violet); color: var(--violet); }
+.plan.highlight .plan-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(108,99,255,0.5); }
+
+/* ─── FAQ ─── */
+.faq-list { max-width: 720px; margin: 60px auto 0; }
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+  cursor: pointer;
+}
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.faq-q .toggle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--gold);
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.faq-item.open .toggle { transform: rotate(45deg); background: rgba(108,99,255,0.2); }
+.faq-a {
+  font-size: 0.9rem;
+  color: rgba(250,249,246,0.55);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.3s;
+}
+.faq-item.open .faq-a { max-height: 200px; padding-top: 14px; }
+
+/* ─── Footer ─── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 70px 6% 40px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+footer h4 {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: rgba(250,249,246,0.4);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+footer a {
+  display: block;
+  color: rgba(250,249,246,0.5);
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  transition: color 0.3s;
+}
+footer a:hover { color: var(--gold); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding: 24px 6%;
+  text-align: center;
+  font-size: 0.82rem;
+  color: rgba(250,249,246,0.25);
+}
+
+/* ─── Dashboard ─── */
+#dashboard {
+  position: fixed;
+  inset: 0;
+  background: var(--ink);
+  z-index: 5000;
+  display: none;
+  flex-direction: row;
+}
+
+.db-sidebar {
+  width: 260px;
+  background: var(--ink2);
+  border-left: 1px solid var(--border);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.db-logo {
+  font-size: 1.3rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 0 10px 30px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.db-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: rgba(250,249,246,0.5);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.25s;
+  margin-bottom: 4px;
+}
+.db-nav-item:hover { background: rgba(255,255,255,0.05); color: var(--cream); }
+.db-nav-item.active { background: rgba(108,99,255,0.15); color: var(--cream); border: 1px solid rgba(108,99,255,0.25); }
+.db-nav-item .nav-icon { font-size: 1.1rem; }
+
+.db-nav-logout {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.db-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 36px;
+  background: #0d0d1a;
+}
+
+/* ─── Tool UIs ─── */
+.tool-wrapper { max-width: 860px; }
+.tool-header { margin-bottom: 32px; }
+.tool-header h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; }
+.tool-header p { color: rgba(250,249,246,0.45); font-size: 0.9rem; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-size: 0.8rem; font-weight: 600; color: rgba(250,249,246,0.5); letter-spacing: 0.5px; }
+
+input, textarea, select {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: var(--cream);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.95rem;
+  width: 100%;
+  transition: border-color 0.3s;
+  outline: none;
+  resize: vertical;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: rgba(108,99,255,0.5);
+  box-shadow: 0 0 0 3px rgba(108,99,255,0.1);
+}
+select option { background: var(--ink2); }
+
+.btn-tool {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 24px rgba(108,99,255,0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-tool:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(108,99,255,0.5); }
+.btn-tool:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* AI Output */
+.ai-output-box {
+  margin-top: 24px;
+  background: rgba(108,99,255,0.05);
+  border: 1px solid rgba(108,99,255,0.2);
+  border-radius: 14px;
+  padding: 24px;
+  min-height: 80px;
+  position: relative;
+}
+.ai-output-box.empty { display: flex; align-items: center; justify-content: center; }
+.ai-output-label {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.ai-output-text {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: rgba(250,249,246,0.85);
+  white-space: pre-wrap;
+}
+.typing-indicator {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 10px 0;
+}
+.typing-indicator span {
+  width: 7px; height: 7px;
+  background: var(--violet);
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+/* AI Chat */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 180px);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.msg {
+  max-width: 70%;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  animation: msgIn 0.3s ease;
+}
+.msg.user {
+  background: linear-gradient(135deg, rgba(108,99,255,0.2), rgba(108,99,255,0.1));
+  border: 1px solid rgba(108,99,255,0.3);
+  align-self: flex-start;
+  border-bottom-right-radius: 4px;
+}
+.msg.ai {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  align-self: flex-end;
+  border-bottom-left-radius: 4px;
+  color: rgba(250,249,246,0.85);
+  white-space: pre-wrap;
+}
+.chat-input-area {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+.chat-input-area textarea {
+  flex: 1;
+  min-height: 52px;
+  max-height: 140px;
+  resize: none;
+  border-radius: 10px;
+}
+.send-btn {
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.send-btn:hover { transform: scale(1.05); }
+.send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Dashboard Home */
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.dash-stat {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+}
+.dash-stat strong { display: block; font-size: 2rem; font-weight: 900; color: var(--gold); }
+.dash-stat span { font-size: 0.82rem; color: var(--muted); }
+
+.quick-tools { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.quick-tool-btn {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: right;
+  color: var(--cream);
+  font-family: 'Tajawal', sans-serif;
+}
+.quick-tool-btn:hover { border-color: var(--violet); background: rgba(108,99,255,0.08); }
+.quick-tool-btn .qt-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+.quick-tool-btn strong { display: block; font-size: 0.92rem; margin-bottom: 4px; }
+.quick-tool-btn p { font-size: 0.78rem; color: var(--muted); margin: 0; }
+
+/* Voice */
+.voice-viz {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 60px;
+  margin: 20px 0;
+}
+.voice-bar {
+  width: 5px;
+  background: var(--violet);
+  border-radius: 3px;
+  transition: height 0.1s;
+}
+
+/* Animations */
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  from { transform: scale(1) translate(0, 0); opacity: 0.6; }
+  to { transform: scale(1.1) translate(20px, 20px); opacity: 1; }
+}
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+</style>
 </head>
 <body>
 
+<!-- LANDING PAGE -->
+<div id="landing">
+
 <header>
-    <div class="logo">SmartTools.ai</div>
-    <nav class="nav-menu">
-        <a href="#services">الخدمات</a>
-        <a href="#pricing">الأسعار</a>
-        <a href="#faq">الأسئلة الشائعة</a>
-        <button class="btn btn-primary" onclick="openDashboard('home')">ابدأ مجاناً</button>
-    </nav>
+  <div class="logo" onclick="document.getElementById('landing').scrollTo(0,0)">SmartTools.ai</div>
+  <nav>
+    <a href="#services">الأدوات</a>
+    <a href="#pricing">الأسعار</a>
+    <a href="#faq">الأسئلة</a>
+    <button class="btn-nav" onclick="openDash('chat')">ابدأ مجاناً ←</button>
+  </nav>
 </header>
 
-<div id="landing-page">
-    <section class="hero">
-        <h1>صمم، اكتب، وأبدع <br><span style="color: var(--primary);">بذكاء لا يصدق</span></h1>
-        <p>المنصة العربية الأولى التي تجمع كل أدوات الذكاء الاصطناعي في مكان واحد. من العقود القانونية إلى الفن الرقمي.</p>
-        <div style="display: flex; gap: 15px; justify-content: center;">
-            <button class="btn btn-primary" onclick="openDashboard('home')">ابدأ تجربتك المجانية</button>
-            <button class="btn" style="background: white; border: 1px solid #ddd;" onclick="window.scrollTo(0, 1000)">اكتشف الأدوات</button>
-        </div>
-    </section>
-
-    <div class="stats">
-        <div class="stat-item"><h3>50k+</h3><p>مستخدم نشط</p></div>
-        <div class="stat-item"><h3>1M+</h3><p>ملف تم إنتاجه</p></div>
-        <div class="stat-item"><h3>22</h3><p>دولة عربية مدعومة</p></div>
-        <div class="stat-item"><h3>99%</h3><p>رضا العملاء</p></div>
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div style="position:relative;z-index:1">
+    <div class="hero-badge">✦ المنصة العربية الأولى للذكاء الاصطناعي</div>
+    <h1>صمّم، اكتب، وأبدع<br>بـ<em>ذكاء حقيقي</em></h1>
+    <p>أدوات ذكاء اصطناعي تعمل فعلياً — من كتابة السير الذاتية إلى صياغة العقود، بالعربية ولهجاتها.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="openDash('chat')">جرّب الذكاء الاصطناعي مجاناً</button>
+      <button class="btn-ghost" onclick="scrollTo('#services')">استكشف الأدوات</button>
     </div>
+  </div>
+</section>
 
-    <section id="services">
-        <div class="section-title">
-            <h2>أدوات مصممة للمستقبل</h2>
-            <p>كل ما تحتاجه لتسريع أعمالك في مكان واحد.</p>
-        </div>
-        <div class="grid">
-            <div class="card" onclick="openDashboard('cv')">
-                <span class="icon">📄</span>
-                <h3>مولد السيرة الذاتية</h3>
-                <p>قوالب عالمية متوافقة مع أنظمة التوظيف الذكية ATS. يدعم العربية والإنجليزية.</p>
-            </div>
-            <div class="card" onclick="openDashboard('law')">
-                <span class="icon">⚖️</span>
-                <h3>محرك العقود القانونية</h3>
-                <p>صياغة عقود احترافية فورية بناءً على قوانين دولتك المحلية.</p>
-            </div>
-            <div class="card" onclick="openDashboard('voice')">
-                <span class="icon">🎙️</span>
-                <h3>التعليق الصوتي AI</h3>
-                <p>حول أي نص إلى صوت بشري طبيعي بأكثر من 10 لهجات عربية.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" style="background: var(--light-gray);">
-        <div class="section-title"><h2>خطط تناسب الجميع</h2></div>
-        <div class="grid" style="max-width: 900px; margin: 0 auto;">
-            <div class="pricing-card">
-                <h3>المجانية</h3>
-                <p style="font-size: 2rem; font-weight: 800;">$0</p>
-                <ul style="list-style: none; padding: 0; margin: 20px 0; text-align: right;">
-                    <li>✓ 5 ملفات شهرياً</li>
-                    <li>✓ أدوات أساسية</li>
-                </ul>
-                <button class="btn" style="width: 100%; border: 1px solid var(--primary);">ابدأ الآن</button>
-            </div>
-            <div class="pricing-card popular">
-                <div style="background: var(--primary); color: white; display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 10px;">الأكثر طلباً</div>
-                <h3>الاحترافية</h3>
-                <p style="font-size: 2rem; font-weight: 800;">$19<span style="font-size: 1rem;">/شهر</span></p>
-                <ul style="list-style: none; padding: 0; margin: 20px 0; text-align: right;">
-                    <li>✓ ملفات غير محدودة</li>
-                    <li>✓ جميع أدوات AI</li>
-                    <li>✓ دعم فني 24/7</li>
-                </ul>
-                <button class="btn btn-primary" style="width: 100%;">اشترك الآن</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="faq">
-        <div class="section-title"><h2>الأسئلة الشائعة</h2></div>
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div class="faq-item"><strong>هل الأدوات تدعم اللهجات المحلية؟</strong><p>نعم، خاصة في أدوات الصوت والمحتوى الإعلاني.</p></div>
-            <div class="faq-item"><strong>كيف يمكنني حفظ ملفاتي؟</strong><p>يتم حفظ جميع أعمالك تلقائياً في لوحة التحكم الخاصة بك.</p></div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-grid">
-            <div>
-                <h4 class="logo" style="color: white;">SmartTools.ai</h4>
-                <p>نبتكر الحلول لنبني مستقبلاً عربياً أذكى.</p>
-            </div>
-            <div>
-                <h4>الروابط</h4>
-                <a href="#services">الخدمات</a>
-                <a href="#pricing">الأسعار</a>
-                <a href="#" onclick="alert('قريباً')">المدونة</a>
-            </div>
-            <div>
-                <h4>الدعم القانوني</h4>
-                <a href="#" onclick="showPrivacy()">سياسة الخصوصية</a>
-                <a href="#">شروط الاستخدام</a>
-            </div>
-            <div>
-                <h4>تواصل معنا</h4>
-                <a href="mailto:support@smarttools.ai">support@smarttools.ai</a>
-                <p>المغرب - الدار البيضاء</p>
-            </div>
-        </div>
-        <hr style="border: 0; border-top: 1px solid #334155; margin-bottom: 30px;">
-        <p style="text-align: center;">© 2026 SmartTools.ai. جميع الحقوق محفوظة.</p>
-    </footer>
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stat"><strong>50k+</strong><span>مستخدم نشط</span></div>
+  <div class="stat"><strong>1M+</strong><span>ملف تم إنتاجه</span></div>
+  <div class="stat"><strong>22</strong><span>دولة عربية</span></div>
+  <div class="stat"><strong>99%</strong><span>رضا العملاء</span></div>
 </div>
 
-<div id="dashboard-view">
-    <div class="sidebar">
-        <div class="logo" style="color: var(--accent); margin-bottom: 40px;" onclick="closeDashboard()">SmartTools.ai</div>
-        <div class="sidebar-nav">
-            <div onclick="renderTool('home')">📊 لوحة التحكم</div>
-            <div onclick="renderTool('cv')">📄 السيرة الذاتية</div>
-            <div onclick="renderTool('law')">⚖️ العقود القانونية</div>
-            <div onclick="renderTool('voice')">🎙️ تحويل الصوت</div>
-            <div style="margin-top: 50px; color: #f87171;" onclick="closeDashboard()">→ تسجيل الخروج</div>
-        </div>
+<!-- Services -->
+<section id="services">
+  <div class="tools-header">
+    <div class="section-label">الأدوات</div>
+    <h2 class="section-title">كل ما تحتاجه في مكان واحد</h2>
+    <p class="section-sub">أدوات ذكاء اصطناعي تعمل فعلاً، لا مجرد واجهات فارغة.</p>
+  </div>
+
+  <div class="tools-grid">
+    <div class="tool-card" onclick="openDash('chat')">
+      <div class="tool-icon">💬</div>
+      <h3>مساعد الذكاء الاصطناعي</h3>
+      <p>تحدث مع AI متطور باللغة العربية. يجيب، يحلل، يكتب، ويفكر معك.</p>
+      <div class="tool-arrow">↙ جرّبه الآن</div>
     </div>
-    <div class="main-content" id="tool-container">
-        </div>
+    <div class="tool-card" onclick="openDash('cv')">
+      <div class="tool-icon">📄</div>
+      <h3>مولد السيرة الذاتية</h3>
+      <p>أدخل بياناتك ويولّد AI سيرة ذاتية احترافية جاهزة للإرسال فوراً.</p>
+      <div class="tool-arrow">↙ ابدأ الآن</div>
+    </div>
+    <div class="tool-card" onclick="openDash('law')">
+      <div class="tool-icon">⚖️</div>
+      <h3>صياغة العقود القانونية</h3>
+      <p>عقود مسوّدة بالذكاء الاصطناعي مصممة لدول عربية محددة وقوانينها.</p>
+      <div class="tool-arrow">↙ ابدأ الآن</div>
+    </div>
+    <div class="tool-card" onclick="openDash('content')">
+      <div class="tool-icon">✍️</div>
+      <h3>كاتب المحتوى الإبداعي</h3>
+      <p>مقالات، تغريدات، وصف منتجات، وبريد إلكتروني احترافي في ثوانٍ.</p>
+      <div class="tool-arrow">↙ ابدأ الآن</div>
+    </div>
+    <div class="tool-card" onclick="openDash('voice')">
+      <div class="tool-icon">🎙️</div>
+      <h3>تحويل النص لصوت</h3>
+      <p>اسمع أي نص بصوت بشري طبيعي بعدة لهجات عربية مختلفة.</p>
+      <div class="tool-arrow">↙ جرّب الصوت</div>
+    </div>
+    <div class="tool-card" onclick="openDash('translate')">
+      <div class="tool-icon">🌐</div>
+      <h3>الترجمة الذكية</h3>
+      <p>ترجمة دقيقة تحافظ على السياق والأسلوب، ليس مجرد كلمات.</p>
+      <div class="tool-arrow">↙ ابدأ الترجمة</div>
+    </div>
+  </div>
+</section>
+
+<!-- AI CTA -->
+<div class="ai-cta-section">
+  <div class="ai-cta-box">
+    <div class="section-label" style="display:block;margin-bottom:12px">✦ مدعوم بـ Claude AI</div>
+    <h2 class="section-title" style="font-size:1.8rem;margin-bottom:12px">تحدّث مع الذكاء الاصطناعي الآن</h2>
+    <p style="color:rgba(250,249,246,0.5);margin-bottom:28px;font-size:0.95rem">اطرح أي سؤال، اطلب أي محتوى، وستحصل على إجابة فورية باللغة العربية.</p>
+    <button class="btn-primary" onclick="openDash('chat')" style="margin:0 auto">ابدأ المحادثة ←</button>
+  </div>
+</div>
+
+<!-- Pricing -->
+<section id="pricing">
+  <div style="text-align:center">
+    <div class="section-label">الأسعار</div>
+    <h2 class="section-title">خطط تناسب الجميع</h2>
+  </div>
+  <div class="pricing-grid">
+    <div class="plan">
+      <h3>المجانية</h3>
+      <div class="plan-price">$0</div>
+      <ul class="plan-features">
+        <li>5 طلبات ذكاء اصطناعي يومياً</li>
+        <li>أدوات أساسية</li>
+        <li>التحدث مع AI</li>
+      </ul>
+      <button class="plan-btn" onclick="openDash('chat')">ابدأ مجاناً</button>
+    </div>
+    <div class="plan highlight">
+      <div class="plan-badge">الأكثر طلباً</div>
+      <h3>الاحترافية</h3>
+      <div class="plan-price">$19<sub>/شهر</sub></div>
+      <ul class="plan-features">
+        <li>طلبات غير محدودة</li>
+        <li>جميع أدوات AI</li>
+        <li>دعم فني 24/7</li>
+        <li>تصدير PDF وWord</li>
+      </ul>
+      <button class="plan-btn" onclick="openDash('chat')">اشترك الآن</button>
+    </div>
+    <div class="plan">
+      <h3>للشركات</h3>
+      <div class="plan-price">$79<sub>/شهر</sub></div>
+      <ul class="plan-features">
+        <li>حتى 20 مستخدم</li>
+        <li>API مخصصة</li>
+        <li>لوحة إدارة متقدمة</li>
+        <li>تدريب مخصص</li>
+      </ul>
+      <button class="plan-btn">تواصل معنا</button>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div style="text-align:center;margin-bottom:0">
+    <div class="section-label">الأسئلة</div>
+    <h2 class="section-title">أسئلة شائعة</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>هل الأدوات تعمل فعلاً بالذكاء الاصطناعي؟</span><div class="toggle">+</div></div>
+      <div class="faq-a">نعم، جميع الأدوات مدعومة بنماذج ذكاء اصطناعي متطورة. يمكنك تجربة المساعد AI مباشرة من لوحة التحكم.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>هل تدعم اللهجات العربية المختلفة؟</span><div class="toggle">+</div></div>
+      <div class="faq-a">نعم، تدعم أداة الصوت عدة لهجات. والمساعد AI يفهم ويتحدث بالعربية الفصحى وكثيراً من اللهجات المحلية.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>كيف يتم ضمان أمان بياناتي؟</span><div class="toggle">+</div></div>
+      <div class="faq-a">بياناتك مشفرة ولا تُشارك مع أي طرف ثالث. كل محادثة خاصة تماماً.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q"><span>هل يمكنني إلغاء الاشتراك في أي وقت؟</span><div class="toggle">+</div></div>
+      <div class="faq-a">نعم، يمكنك إلغاء اشتراكك في أي وقت دون أي رسوم إضافية.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div>
+    <div class="logo" style="font-size:1.4rem;margin-bottom:16px">SmartTools.ai</div>
+    <p style="color:rgba(250,249,246,0.4);font-size:0.85rem;line-height:1.8">نبتكر الحلول الذكية<br>لنبني مستقبلاً عربياً أذكى.</p>
+  </div>
+  <div>
+    <h4>الأدوات</h4>
+    <a href="#" onclick="openDash('chat')">المساعد AI</a>
+    <a href="#" onclick="openDash('cv')">السيرة الذاتية</a>
+    <a href="#" onclick="openDash('law')">العقود القانونية</a>
+    <a href="#" onclick="openDash('voice')">تحويل الصوت</a>
+  </div>
+  <div>
+    <h4>الشركة</h4>
+    <a href="#">عن المنصة</a>
+    <a href="#">المدونة</a>
+    <a href="#">الشراكات</a>
+  </div>
+  <div>
+    <h4>الدعم</h4>
+    <a href="mailto:support@smarttools.ai">support@smarttools.ai</a>
+    <a href="#">سياسة الخصوصية</a>
+    <a href="#">شروط الاستخدام</a>
+  </div>
+</footer>
+<div class="footer-bottom">© 2026 SmartTools.ai — جميع الحقوق محفوظة. مصنوع بـ ♥ للعالم العربي</div>
+
+</div><!-- end landing -->
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="db-sidebar">
+    <div class="db-logo" onclick="closeDash()">⟵ SmartTools.ai</div>
+    <div id="db-nav">
+      <div class="db-nav-item" data-tool="home" onclick="switchTool('home')"><span class="nav-icon">📊</span> لوحة التحكم</div>
+      <div class="db-nav-item" data-tool="chat" onclick="switchTool('chat')"><span class="nav-icon">💬</span> المساعد AI</div>
+      <div class="db-nav-item" data-tool="cv" onclick="switchTool('cv')"><span class="nav-icon">📄</span> السيرة الذاتية</div>
+      <div class="db-nav-item" data-tool="law" onclick="switchTool('law')"><span class="nav-icon">⚖️</span> العقود القانونية</div>
+      <div class="db-nav-item" data-tool="content" onclick="switchTool('content')"><span class="nav-icon">✍️</span> كاتب المحتوى</div>
+      <div class="db-nav-item" data-tool="voice" onclick="switchTool('voice')"><span class="nav-icon">🎙️</span> تحويل الصوت</div>
+      <div class="db-nav-item" data-tool="translate" onclick="switchTool('translate')"><span class="nav-icon">🌐</span> الترجمة الذكية</div>
+    </div>
+    <div class="db-nav-logout">
+      <div class="db-nav-item" onclick="closeDash()" style="color:#f87171">
+        <span class="nav-icon">↩</span> الرجوع للرئيسية
+      </div>
+    </div>
+  </div>
+  <div class="db-main" id="db-content"></div>
 </div>
 
 <script>
-    function openDashboard(initialTool) {
-        document.getElementById('landing-page').style.display = 'none';
-        document.getElementById('dashboard-view').style.display = 'flex';
-        renderTool(initialTool);
-    }
+// ─── Navigation ───
+function openDash(tool) {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'flex';
+  switchTool(tool);
+}
+function closeDash() {
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('landing').style.display = 'block';
+}
+function scrollTo(sel) {
+  document.querySelector(sel)?.scrollIntoView({behavior:'smooth'});
+}
+function switchTool(tool) {
+  document.querySelectorAll('.db-nav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.tool === tool);
+  });
+  renderTool(tool);
+}
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
 
-    function closeDashboard() {
-        document.getElementById('dashboard-view').style.display = 'none';
-        document.getElementById('landing-page').style.display = 'block';
-    }
+// ─── Claude API call ───
+async function callClaude(messages, systemPrompt = '') {
+  const body = {
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1000,
+    messages
+  };
+  if (systemPrompt) body.system = systemPrompt;
 
-    function renderTool(tool) {
-        const container = document.getElementById('tool-container');
-        if (tool === 'home') {
-            container.innerHTML = `
-                <h2>لوحة التحكم</h2>
-                <div class="grid">
-                    <div class="card"><h3>الملفات المحفوظة</h3><p>0 ملف</p></div>
-                    <div class="card"><h3>النقاط المتبقية</h3><p>100 نقطة</p></div>
-                </div>
-            `;
-        } else if (tool === 'cv') {
-            container.innerHTML = `<h2>📄 مولد السيرة الذاتية</h2><div class="card"><input type="text" placeholder="الاسم الكامل"><textarea placeholder="الملخص المهني"></textarea><button class="btn btn-primary">توليد PDF</button></div>`;
-        } else if (tool === 'law') {
-            container.innerHTML = `<h2>⚖️ صانع العقود</h2><div class="card"><select><option>اختر الدولة</option><option>المغرب</option><option>مصر</option></select><button class="btn btn-primary">توليد مسودة</button></div>`;
-        } else if (tool === 'voice') {
-            container.innerHTML = `<h2>🎙️ تحويل النص لصوت</h2><div class="card"><textarea id="v-text" placeholder="اكتب النص هنا"></textarea><button class="btn btn-primary" onclick="speakNow()">استماع</button></div>`;
-        }
-    }
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content.map(b => b.text || '').join('');
+}
 
-    function speakNow() {
-        const t = document.getElementById('v-text').value;
-        const s = new SpeechSynthesisUtterance(t);
-        s.lang = 'ar';
-        window.speechSynthesis.speak(s);
-    }
+// ─── Tools Renderer ───
+function renderTool(tool) {
+  const c = document.getElementById('db-content');
+  const tools = {
+    home: renderHome,
+    chat: renderChat,
+    cv: renderCV,
+    law: renderLaw,
+    content: renderContent,
+    voice: renderVoice,
+    translate: renderTranslate
+  };
+  (tools[tool] || renderHome)(c);
+}
 
-    function showPrivacy() {
-        alert("سياسة الخصوصية: نحن نحمي بياناتك ولا نشاركها مع أي طرف ثالث.");
+// ── Home ──
+function renderHome(c) {
+  c.innerHTML = `
+    <div class="tool-wrapper">
+      <div class="tool-header">
+        <h2>مرحباً بك 👋</h2>
+        <p>اختر أداة للبدء أو تحدث مع المساعد AI مباشرة</p>
+      </div>
+      <div class="dash-stats">
+        <div class="dash-stat"><strong>6</strong><span>أدوات متاحة</span></div>
+        <div class="dash-stat"><strong>∞</strong><span>إمكانيات AI</span></div>
+        <div class="dash-stat"><strong>0ms</strong><span>تأخير تقريباً</span></div>
+      </div>
+      <h3 style="margin-bottom:16px;font-size:1rem;color:rgba(250,249,246,0.5);letter-spacing:1px;text-transform:uppercase">وصول سريع</h3>
+      <div class="quick-tools">
+        <button class="quick-tool-btn" onclick="switchTool('chat')">
+          <span class="qt-icon">💬</span>
+          <strong>المساعد AI</strong>
+          <p>تحدث مع Claude بالعربية</p>
+        </button>
+        <button class="quick-tool-btn" onclick="switchTool('cv')">
+          <span class="qt-icon">📄</span>
+          <strong>السيرة الذاتية</strong>
+          <p>مولّد ذكي احترافي</p>
+        </button>
+        <button class="quick-tool-btn" onclick="switchTool('law')">
+          <span class="qt-icon">⚖️</span>
+          <strong>العقود القانونية</strong>
+          <p>صياغة فورية بالذكاء الاصطناعي</p>
+        </button>
+        <button class="quick-tool-btn" onclick="switchTool('content')">
+          <span class="qt-icon">✍️</span>
+          <strong>كاتب المحتوى</strong>
+          <p>مقالات وتسويق وإبداع</p>
+        </button>
+      </div>
+    </div>`;
+}
+
+// ── AI Chat ──
+let chatHistory = [];
+function renderChat(c) {
+  c.innerHTML = `
+    <div class="tool-wrapper" style="max-width:100%;height:100%">
+      <div class="tool-header">
+        <h2>💬 المساعد AI</h2>
+        <p>مدعوم بـ Claude — اسأل أي شيء بالعربية</p>
+      </div>
+      <div class="chat-container">
+        <div class="chat-messages" id="chat-msgs">
+          <div class="msg ai">أهلاً! أنا مساعدك الذكي. يمكنني مساعدتك في الكتابة، التحليل، الأسئلة، والأفكار الإبداعية. كيف يمكنني خدمتك اليوم؟</div>
+        </div>
+        <div class="chat-input-area">
+          <textarea id="chat-input" placeholder="اكتب رسالتك هنا..." rows="1" onkeydown="chatKeydown(event)"></textarea>
+          <button class="send-btn" id="send-btn" onclick="sendChat()">↑</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msgs = document.getElementById('chat-msgs');
+  const btn = document.getElementById('send-btn');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  btn.disabled = true;
+
+  // User message
+  msgs.innerHTML += `<div class="msg user">${escHtml(text)}</div>`;
+  chatHistory.push({ role: 'user', content: text });
+
+  // Typing indicator
+  const typingId = 'typing-' + Date.now();
+  msgs.innerHTML += `<div class="msg ai" id="${typingId}"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const reply = await callClaude(
+      chatHistory,
+      'أنت مساعد ذكاء اصطناعي متخصص للعالم العربي. أجب دائماً بالعربية بأسلوب احترافي وودود. كن مفيداً ودقيقاً وموجزاً.'
+    );
+    document.getElementById(typingId).outerHTML = `<div class="msg ai">${escHtml(reply)}</div>`;
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    document.getElementById(typingId).outerHTML = `<div class="msg ai" style="color:#f87171">⚠️ حدث خطأ: ${escHtml(e.message)}</div>`;
+  }
+
+  btn.disabled = false;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function chatKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+// ── CV Generator ──
+function renderCV(c) {
+  c.innerHTML = `
+    <div class="tool-wrapper">
+      <div class="tool-header">
+        <h2>📄 مولد السيرة الذاتية</h2>
+        <p>أدخل بياناتك ويولّد AI سيرة ذاتية احترافية</p>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>الاسم الكامل</label><input id="cv-name" placeholder="مثال: أحمد محمد"></div>
+        <div class="field"><label>المسمى الوظيفي المطلوب</label><input id="cv-title" placeholder="مثال: مطوّر ويب"></div>
+        <div class="field"><label>البريد الإلكتروني</label><input id="cv-email" placeholder="ahmed@example.com"></div>
+        <div class="field"><label>رقم الهاتف</label><input id="cv-phone" placeholder="+212 6xx xxx xxx"></div>
+        <div class="field full"><label>الخبرات المهنية (اذكرها باختصار)</label><textarea id="cv-exp" rows="3" placeholder="مثال: 3 سنوات خبرة في تطوير تطبيقات React وNode.js، عملت مع 5 شركات..."></textarea></div>
+        <div class="field full"><label>المهارات التقنية</label><input id="cv-skills" placeholder="مثال: Python, React, SQL, التصميم"></div>
+        <div class="field full"><label>التعليم</label><input id="cv-edu" placeholder="مثال: بكالوريوس هندسة المعلوميات، جامعة محمد الخامس 2020"></div>
+      </div>
+      <button class="btn-tool" onclick="generateCV()"><span id="cv-btn-txt">✨ توليد السيرة الذاتية</span><div id="cv-spinner" style="display:none" class="spinner"></div></button>
+      <div class="ai-output-box" id="cv-output" style="display:none">
+        <div class="ai-output-label">✦ السيرة الذاتية المولّدة</div>
+        <div class="ai-output-text" id="cv-result"></div>
+        <button class="btn-tool" style="margin-top:16px;font-size:0.85rem;padding:10px 20px" onclick="copyOutput('cv-result')">📋 نسخ النص</button>
+      </div>
+    </div>`;
+}
+
+async function generateCV() {
+  const btn = document.querySelector('#cv-output ~ button, .btn-tool');
+  const spinner = document.getElementById('cv-spinner');
+  const txt = document.getElementById('cv-btn-txt');
+  const name = document.getElementById('cv-name').value;
+  const title = document.getElementById('cv-title').value;
+  const email = document.getElementById('cv-email').value;
+  const phone = document.getElementById('cv-phone').value;
+  const exp = document.getElementById('cv-exp').value;
+  const skills = document.getElementById('cv-skills').value;
+  const edu = document.getElementById('cv-edu').value;
+
+  if (!name || !title) { alert('يرجى إدخال الاسم والمسمى الوظيفي على الأقل'); return; }
+
+  txt.textContent = 'يعمل AI...';
+  spinner.style.display = 'block';
+  document.querySelectorAll('.btn-tool')[0].disabled = true;
+
+  const prompt = `اكتب سيرة ذاتية احترافية كاملة باللغة العربية للشخص التالي:
+الاسم: ${name}
+المسمى المطلوب: ${title}
+البريد: ${email || 'غير محدد'}
+الهاتف: ${phone || 'غير محدد'}
+الخبرات: ${exp || 'لا توجد خبرات محددة'}
+المهارات: ${skills || 'غير محدد'}
+التعليم: ${edu || 'غير محدد'}
+
+اكتب السيرة الذاتية بشكل منظم ومحترف مع عناوين واضحة. استخدم أسلوباً قوياً ومقنعاً. اجعلها جاهزة للإرسال مباشرة لأصحاب العمل.`;
+
+  try {
+    const result = await callClaude([{role:'user', content: prompt}]);
+    document.getElementById('cv-output').style.display = 'block';
+    document.getElementById('cv-result').textContent = result;
+  } catch(e) {
+    alert('خطأ: ' + e.message);
+  }
+
+  txt.textContent = '✨ توليد السيرة الذاتية';
+  spinner.style.display = 'none';
+  document.querySelectorAll('.btn-tool')[0].disabled = false;
+}
+
+// ── Law Contracts ──
+function renderLaw(c) {
+  c.innerHTML = `
+    <div class="tool-wrapper">
+      <div class="tool-header">
+        <h2>⚖️ صانع العقود القانونية</h2>
+        <p>مسوّدة عقد احترافية بالذكاء الاصطناعي وفق القانون المحلي</p>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>نوع العقد</label>
+          <select id="law-type">
+            <option value="">اختر نوع العقد</option>
+            <option>عقد عمل</option>
+            <option>عقد إيجار سكني</option>
+            <option>عقد إيجار تجاري</option>
+            <option>عقد شراكة تجارية</option>
+            <option>عقد خدمات مستقل (فريلانس)</option>
+            <option>اتفاقية سرية (NDA)</option>
+            <option>عقد بيع عقارات</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>الدولة</label>
+          <select id="law-country">
+            <option value="">اختر الدولة</option>
+            <option>المغرب</option>
+            <option>مصر</option>
+            <option>السعودية</option>
+            <option>الإمارات</option>
+            <option>الجزائر</option>
+            <option>تونس</option>
+            <option>الكويت</option>
+            <option>قطر</option>
+          </select>
+        </div>
+        <div class="field"><label>الطرف الأول (الاسم والجنسية)</label><input id="law-p1" placeholder="مثال: أحمد محمد، مغربي"></div>
+        <div class="field"><label>الطرف الثاني (الاسم والجنسية)</label><input id="law-p2" placeholder="مثال: شركة النجوم، مصرية"></div>
+        <div class="field full"><label>تفاصيل إضافية (اختياري)</label><textarea id="law-details" rows="3" placeholder="مثال: مدة العقد سنة، راتب شهري 5000 درهم، مع فترة تجريبية 3 أشهر..."></textarea></div>
+      </div>
+      <button class="btn-tool" onclick="generateContract()"><span id="law-btn-txt">⚖️ توليد مسودة العقد</span><div id="law-spinner" style="display:none" class="spinner"></div></button>
+      <div class="ai-output-box" id="law-output" style="display:none">
+        <div class="ai-output-label">✦ مسودة العقد القانوني</div>
+        <div class="ai-output-text" id="law-result"></div>
+        <button class="btn-tool" style="margin-top:16px;font-size:0.85rem;padding:10px 20px" onclick="copyOutput('law-result')">📋 نسخ النص</button>
+      </div>
+    </div>`;
+}
+
+async function generateContract() {
+  const type = document.getElementById('law-type').value;
+  const country = document.getElementById('law-country').value;
+  const p1 = document.getElementById('law-p1').value;
+  const p2 = document.getElementById('law-p2').value;
+  const details = document.getElementById('law-details').value;
+
+  if (!type || !country) { alert('يرجى اختيار نوع العقد والدولة'); return; }
+
+  document.getElementById('law-btn-txt').textContent = 'يعمل AI...';
+  document.getElementById('law-spinner').style.display = 'block';
+
+  const prompt = `اكتب مسودة عقد قانوني احترافي باللغة العربية:
+نوع العقد: ${type}
+الدولة: ${country} (يجب أن يتوافق مع القانون المحلي)
+الطرف الأول: ${p1 || 'الطرف الأول'}
+الطرف الثاني: ${p2 || 'الطرف الثاني'}
+تفاصيل إضافية: ${details || 'لا توجد'}
+
+اكتب عقداً قانونياً كاملاً ومنظماً مع: ديباجة، بنود واضحة مرقّمة، حقوق وواجبات الطرفين، شروط الإنهاء، وبند التوقيع. استخدم الصياغة القانونية المناسبة لدولة ${country}.`;
+
+  try {
+    const result = await callClaude([{role:'user', content: prompt}],
+      'أنت محامٍ خبير متخصص في القانون العربي. اكتب عقوداً قانونية دقيقة ومهنية.');
+    document.getElementById('law-output').style.display = 'block';
+    document.getElementById('law-result').textContent = result;
+  } catch(e) {
+    alert('خطأ: ' + e.message);
+  }
+
+  document.getElementById('law-btn-txt').textContent = '⚖️ توليد مسودة العقد';
+  document.getElementById('law-spinner').style.display = 'none';
+}
+
+// ── Content Writer ──
+function renderContent(c) {
+  c.innerHTML = `
+    <div class="tool-wrapper">
+      <div class="tool-header">
+        <h2>✍️ كاتب المحتوى AI</h2>
+        <p>اكتب أي نوع محتوى باللغة العربية في ثوانٍ</p>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>نوع المحتوى</label>
+          <select id="ct-type">
+            <option>مقال تسويقي</option>
+            <option>تغريدات تويتر</option>
+            <option>منشور إنستغرام</option>
+            <option>وصف منتج</option>
+            <option>بريد إلكتروني احترافي</option>
+            <option>خطاب تعريفي</option>
+            <option>إعلان تجاري</option>
+            <option>محتوى مدونة</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>لهجة الكتابة</label>
+          <select id="ct-tone">
+            <option>احترافية ورسمية</option>
+            <option>ودية وعفوية</option>
+            <option>مثيرة وجذابة</option>
+            <option>هادئة ومطمئنة</option>
+            <option>حماسية ومحفزة</option>
+          </select>
+        </div>
+        <div class="field full"><label>الموضوع أو الهدف</label><textarea id="ct-topic" rows="3" placeholder="مثال: أريد الترويج لتطبيق توصيل طعام في المغرب، الجمهور المستهدف: شباب 18-30 سنة..."></textarea></div>
+      </div>
+      <button class="btn-tool" onclick="generateContent()"><span id="ct-btn-txt">✨ توليد المحتوى</span><div id="ct-spinner" style="display:none" class="spinner"></div></button>
+      <div class="ai-output-box" id="ct-output" style="display:none">
+        <div class="ai-output-label">✦ المحتوى المولّد</div>
+        <div class="ai-output-text" id="ct-result"></div>
+        <button class="btn-tool" style="margin-top:16px;font-size:0.85rem;padding:10px 20px" onclick="copyOutput('ct-result')">📋 نسخ النص</button>
+      </div>
+    </div>`;
+}
+
+async function generateContent() {
+  const type = document.getElementById('ct-type').value;
+  const tone = document.getElementById('ct-tone').value;
+  const topic = document.getElementById('ct-topic').value;
+  if (!topic) { alert('يرجى كتابة الموضوع أولاً'); return; }
+
+  document.getElementById('ct-btn-txt').textContent = 'يكتب AI...';
+  document.getElementById('ct-spinner').style.display = 'block';
+
+  const prompt = `اكتب ${type} باللغة العربية بأسلوب: ${tone}
+الموضوع والتعليمات: ${topic}
+اكتب المحتوى كاملاً وجاهزاً للنشر مباشرة.`;
+
+  try {
+    const result = await callClaude([{role:'user', content: prompt}],
+      'أنت كاتب محتوى عربي خبير ومبدع. اكتب محتوى مميزاً وجذاباً يناسب السياق العربي.');
+    document.getElementById('ct-output').style.display = 'block';
+    document.getElementById('ct-result').textContent = result;
+  } catch(e) { alert('خطأ: ' + e.message); }
+
+  document.getElementById('ct-btn-txt').textContent = '✨ توليد المحتوى';
+  document.getElementById('ct-spinner').style.display = 'none';
+}
+
+// ── Voice ──
+function renderVoice(c) {
+  c.innerHTML = `
+    <div class="tool-wrapper">
+      <div class="tool-header">
+        <h2>🎙️ تحويل النص إلى صوت</h2>
+        <p>اسمع أي نص عربي بصوت بشري طبيعي</p>
+      </div>
+      <div class="form-grid">
+        <div class="field full"><label>النص المراد قراءته</label><textarea id="voice-txt" rows="6" placeholder="اكتب أو الصق النص العربي هنا..."></textarea></div>
+        <div class="field">
+          <label>اللهجة / اللغة</label>
+          <select id="voice-lang">
+            <option value="ar-SA">عربي فصيح (السعودية)</option>
+            <option value="ar-MA">المغرب</option>
+            <option value="ar-EG">مصر</option>
+            <option value="ar-AE">الإمارات</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>سرعة القراءة</label>
+          <select id="voice-rate">
+            <option value="0.85">بطيء</option>
+            <option value="1" selected>طبيعي</option>
+            <option value="1.2">سريع</option>
+          </select>
+        </div>
+      </div>
+      <div id="voice-viz" class="voice-viz" style="display:none">
+        ${Array.from({length:20}, (_,i) => `<div class="voice-bar" id="vb${i}" style="height:10px"></div>`).join('')}
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn-tool" onclick="speakText()" id="speak-btn">🔊 استماع</button>
+        <button class="btn-tool" onclick="stopSpeak()" id="stop-btn" style="background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);box-shadow:none;display:none">⏹ إيقاف</button>
+      </div>
+    </div>`;
+}
+
+let voiceInterval;
+function speakText() {
+  const txt = document.getElementById('voice-txt').value;
+  const lang = document.getElementById('voice-lang').value;
+  const rate = parseFloat(document.getElementById('voice-rate').value);
+  if (!txt) { alert('يرجى كتابة نص أولاً'); return; }
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(txt);
+  utt.lang = lang; utt.rate = rate;
+  document.getElementById('voice-viz').style.display = 'flex';
+  document.getElementById('stop-btn').style.display = 'flex';
+  voiceInterval = setInterval(() => {
+    for(let i=0;i<20;i++) {
+      const h = Math.random()*45+5;
+      const el = document.getElementById('vb'+i);
+      if(el) el.style.height = h+'px';
     }
+  }, 120);
+  utt.onend = () => { clearInterval(voiceInterval); document.getElementById('voice-viz').style.display = 'none'; document.getElementById('stop-btn').style.display = 'none'; };
+  window.speechSynthesis.speak(utt);
+}
+function stopSpeak() {
+  window.speechSynthesis.cancel();
+  clearInterval(voiceInterval);
+  document.getElementById('voice-viz').style.display = 'none';
+  document.getElementById('stop-btn').style.display = 'none';
+}
+
+// ── Translate ──
+function renderTranslate(c) {
+  c.innerHTML = `
+    <div class="tool-wrapper">
+      <div class="tool-header">
+        <h2>🌐 الترجمة الذكية</h2>
+        <p>ترجمة دقيقة تحافظ على السياق والمعنى</p>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>من</label>
+          <select id="tr-from">
+            <option value="العربية">العربية</option>
+            <option value="الإنجليزية">الإنجليزية</option>
+            <option value="الفرنسية">الفرنسية</option>
+            <option value="الإسبانية">الإسبانية</option>
+            <option value="الألمانية">الألمانية</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>إلى</label>
+          <select id="tr-to">
+            <option value="الإنجليزية">الإنجليزية</option>
+            <option value="العربية">العربية</option>
+            <option value="الفرنسية">الفرنسية</option>
+            <option value="الإسبانية">الإسبانية</option>
+            <option value="الألمانية">الألمانية</option>
+          </select>
+        </div>
+        <div class="field full"><label>النص الأصلي</label><textarea id="tr-input" rows="5" placeholder="اكتب أو الصق النص هنا..."></textarea></div>
+      </div>
+      <button class="btn-tool" onclick="doTranslate()"><span id="tr-btn-txt">🌐 ترجمة الآن</span><div id="tr-spinner" style="display:none" class="spinner"></div></button>
+      <div class="ai-output-box" id="tr-output" style="display:none">
+        <div class="ai-output-label">✦ الترجمة</div>
+        <div class="ai-output-text" id="tr-result"></div>
+        <button class="btn-tool" style="margin-top:16px;font-size:0.85rem;padding:10px 20px" onclick="copyOutput('tr-result')">📋 نسخ الترجمة</button>
+      </div>
+    </div>`;
+}
+
+async function doTranslate() {
+  const from = document.getElementById('tr-from').value;
+  const to = document.getElementById('tr-to').value;
+  const text = document.getElementById('tr-input').value;
+  if (!text) { alert('يرجى كتابة النص'); return; }
+
+  document.getElementById('tr-btn-txt').textContent = 'يترجم AI...';
+  document.getElementById('tr-spinner').style.display = 'block';
+
+  const prompt = `ترجم النص التالي من ${from} إلى ${to} بدقة عالية، محافظاً على المعنى والأسلوب:
+
+"${text}"
+
+قدّم الترجمة فقط بدون أي شرح أو تعليق.`;
+
+  try {
+    const result = await callClaude([{role:'user', content: prompt}]);
+    document.getElementById('tr-output').style.display = 'block';
+    document.getElementById('tr-result').textContent = result;
+  } catch(e) { alert('خطأ: ' + e.message); }
+
+  document.getElementById('tr-btn-txt').textContent = '🌐 ترجمة الآن';
+  document.getElementById('tr-spinner').style.display = 'none';
+}
+
+// ── Helpers ──
+function copyOutput(id) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => alert('تم النسخ!'));
+}
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
 </script>
-
 </body>
 </html>
